@@ -9,6 +9,8 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import SellerProfilePage from './pages/SellerProfilePage';
 import EducationPage from './pages/EducationPage';
 import AuthPage from './pages/AuthPage';
+import ProfilePage from './pages/ProfilePage';
+
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
             <Route path="/satici/:id" element={<SellerProfilePage />} />
             <Route path="/egitim" element={<EducationPage />} />
             <Route path="/giris" element={<AuthPage />} />
+            <Route path="/profil" element={<ProfilePage />} />
+
           </Routes>
         </main>
         <Footer />

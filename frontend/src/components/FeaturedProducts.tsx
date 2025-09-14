@@ -117,7 +117,7 @@ const FeaturedProducts = () => {
         <div className="text-center mt-12">
           <Link
             to="/urunler"
-            className="inline-flex items-center px-8 py-3 bg-sage-600 text-white font-semibold rounded-xl hover:bg-sage-700 transition-colors"
+            className="inline-flex items-center px-8 py-3 bg-sage-400 text-white font-semibold rounded-xl hover:bg-sage-500 transition-colors"
           >
             Tüm Ürünleri Görüntüle
           </Link>
