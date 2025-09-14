@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useUser } from '../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -6,6 +8,72 @@ const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  // form
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
+  const { setUser } = useUser();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    if (!username || !password) {
+      setError('Kullanıcı adı ve şifre gerekli');
+      return;
+    }
+    if (!isLogin && password !== confirmPassword) {
+      setError('Şifreler eşleşmiyor');
+      return;
+    }
+    try {
+      console.log('Sending request to:', isLogin ? '/api/auth/login' : '/api/auth/register');
+      const response = await fetch(isLogin ? '/api/auth/login' : '/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+      console.log('Raw response:', response);
+      let text = await response.text();
+      console.log('Raw response text:', text);
+      let data;
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch (jsonErr) {
+        console.error('JSON parse error:', jsonErr);
+        setError('Sunucudan geçersiz yanıt alındı.');
+        return;
+      }
+      console.log('Register/Login response:', response.status, data);
+      if (!response.ok) throw new Error(data?.message || 'Hata');
+      if (isLogin) {
+        setSuccess('Giriş başarılı! Yönlendiriliyorsunuz...');
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          // get username from jwt
+          try {
+            const payload = JSON.parse(atob(data.token.split('.')[1]));
+            setUser({ username: payload.username, token: data.token });
+          } catch (e) {
+            setUser({ username: '', token: data.token });
+          }
+        }
+        setTimeout(() => {
+          navigate('/'); 
+        }, 1500);
+      } else {
+        setSuccess('Kayıt başarılı! Şimdi giriş yapabilirsiniz.');
+        setTimeout(() => {
+          setIsLogin(true);
+          setSuccess('');
+        }, 1500);
+      }
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cream-50 to-rose-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -31,36 +99,29 @@ const AuthPage = () => {
           </div>
 
           {/* Form */}
-          <form className="space-y-6">
-            {!isLogin && (
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                  Ad Soyad
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  required
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-colors"
-                  placeholder="Adınızı ve soyadınızı girin"
-                />
-              </div>
-            )}
-
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                E-posta Adresi
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+                Kullanıcı Adı
               </label>
               <input
-                id="email"
-                name="email"
-                type="email"
+                id="username"
+                name="username"
+                type="text"
                 required
+                value={username}
+                onChange={e => setUsername(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-colors"
-                placeholder="ornek@email.com"
+                placeholder="Kullanıcı adınızı girin"
               />
             </div>
+
+            {error && (
+              <div className="text-red-500 text-sm text-center">{error}</div>
+            )}
+            {success && (
+              <div className="text-green-600 text-sm text-center">{success}</div>
+            )}
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
@@ -72,6 +133,8 @@ const AuthPage = () => {
                   name="password"
                   type={showPassword ? 'text' : 'password'}
                   required
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
                   className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-colors"
                   placeholder="Şifrenizi girin"
                 />
@@ -96,6 +159,8 @@ const AuthPage = () => {
                     name="confirmPassword"
                     type={showConfirmPassword ? 'text' : 'password'}
                     required
+                    value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
                     className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-colors"
                     placeholder="Şifrenizi tekrar girin"
                   />

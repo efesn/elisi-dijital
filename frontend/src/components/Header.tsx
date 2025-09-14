@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useUser } from '../context/UserContext';
 import { Link, useLocation } from 'react-router-dom';
 import { Search, Menu, X, User, ShoppingBag, Heart } from 'lucide-react';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { user, logout } = useUser();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -56,13 +58,21 @@ const Header = () => {
             <button className="p-2 text-gray-400 hover:text-gray-500 transition-colors">
               <ShoppingBag className="h-5 w-5" />
             </button>
-            <Link
-              to="/giris"
-              className="flex items-center space-x-2 bg-rose-600 text-white px-4 py-2 rounded-lg hover:bg-rose-700 transition-colors"
-            >
-              <User className="h-4 w-4" />
-              <span>Giriş Yap</span>
-            </Link>
+            {user ? (
+              <div className="flex items-center space-x-2">
+                <span className="font-medium text-gray-700">{user.username}</span>
+                <Link to="/profil" className="bg-sage-400 text-white px-3 py-1 rounded-lg hover:bg-sage-500 transition-colors">Profil</Link>
+                <button onClick={logout} className="bg-gray-200 text-gray-700 px-2 py-1 rounded hover:bg-gray-300 ml-2">Çıkış</button>
+              </div>
+            ) : (
+              <Link
+                to="/giris"
+                className="flex items-center space-x-2 bg-rose-600 text-white px-4 py-2 rounded-lg hover:bg-rose-700 transition-colors"
+              >
+                <User className="h-4 w-4" />
+                <span>Giriş Yap</span>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -99,14 +109,22 @@ const Header = () => {
               >
                 Eğitimler
               </Link>
-              <Link
-                to="/giris"
-                className="flex items-center space-x-2 bg-rose-600 text-white px-4 py-2 rounded-lg hover:bg-rose-700 transition-colors w-fit"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <User className="h-4 w-4" />
-                <span>Giriş Yap</span>
-              </Link>
+              {user ? (
+                <div className="flex items-center space-x-2">
+                  <span className="font-medium text-gray-700">{user.username}</span>
+                  <Link to="/profil" className="bg-sage-400 text-white px-3 py-1 rounded-lg hover:bg-sage-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Profil</Link>
+                  <button onClick={logout} className="bg-gray-200 text-gray-700 px-2 py-1 rounded hover:bg-gray-300 ml-2">Çıkış</button>
+                </div>
+              ) : (
+                <Link
+                  to="/giris"
+                  className="flex items-center space-x-2 bg-rose-600 text-white px-4 py-2 rounded-lg hover:bg-rose-700 transition-colors w-fit"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <User className="h-4 w-4" />
+                  <span>Giriş Yap</span>
+                </Link>
+              )}
             </div>
           </div>
         )}
