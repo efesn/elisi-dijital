@@ -10,6 +10,7 @@ import SellerProfilePage from './pages/SellerProfilePage';
 import EducationPage from './pages/EducationPage';
 import AuthPage from './pages/AuthPage';
 import ProfilePage from './pages/ProfilePage';
+import SellerRequestPage from './pages/SellerRequestPage';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <Route path="/giris" element={<AuthPage />} />
             <Route path="/profil" element={<ProfilePage />} />
 
+            <Route path="/satici-ol" element={<SellerRequestPage />} />
           </Routes>
         </main>
         <Footer />

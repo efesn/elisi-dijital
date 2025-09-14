@@ -48,10 +48,39 @@ const Header = () => {
             >
               Eğitimler
             </Link>
+
           </nav>
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
+            {/* Satıcı CTA */}
+                <Link
+  to="/satici-ol"
+  className="flex items-center px-4 py-1 rounded-lg font-semibold text-white transition-all shadow-sm mx-2"
+  style={{
+    whiteSpace: "nowrap",
+    backgroundImage: "linear-gradient(135deg, #bc4e9c 0%, #f80759 100%)"
+  }}
+>
+  Satıcı ol
+  <svg
+    width="22"
+    height="22"
+    viewBox="0 0 22 22"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="ml-2"
+  >
+    <path
+      d="M7 11H15M15 11L12 8M15 11L12 14"
+      stroke="white"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+</Link>
+
             <button className="p-2 text-gray-400 hover:text-gray-500 transition-colors">
               <Search className="h-5 w-5" />
             </button>
