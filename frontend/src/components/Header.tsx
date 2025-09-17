@@ -16,9 +16,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-sage-400 rounded-lg flex items-center justify-center">
-              <Heart className="h-6 w-6 text-white" />
-            </div>
+            <img src="/logo.png" alt="Elişi Dijital Logo" className="w-10 h-10 rounded-lg object-cover" />
             <span className="text-xl font-display font-bold text-gray-900">Elişi Dijital</span>
           </Link>
 
@@ -47,6 +45,14 @@ const Header = () => {
               }`}
             >
               Eğitimler
+            </Link>
+            <Link
+              to="/topluluk"
+              className={`font-medium transition-colors ${
+                isActive('/topluluk') ? 'text-rose-600' : 'text-gray-700 hover:text-rose-600'
+              }`}
+            >
+              Topluluk
             </Link>
 
           </nav>
@@ -138,6 +144,15 @@ const Header = () => {
               >
                 Eğitimler
               </Link>
+
+              <Link
+              to="/topluluk"
+              className={`font-medium transition-colors ${
+                isActive('/topluluk') ? 'text-rose-600' : 'text-gray-700 hover:text-rose-600'
+              }`}
+            >
+              Topluluk
+            </Link>
               {user ? (
                 <div className="flex items-center space-x-2">
                   <span className="font-medium text-gray-700">{user.username}</span>

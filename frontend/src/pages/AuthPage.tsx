@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useUser } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Heart } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
+import logo from '../assets/logo.png';
 import { Link } from 'react-router-dom';
 
 const AuthPage = () => {
@@ -80,16 +81,14 @@ const AuthPage = () => {
       <div className="max-w-md w-full">
         <div className="bg-white rounded-2xl shadow-xl p-8">
           {/* Logo */}
-          <div className="text-center mb-8">
-            <Link to="/" className="inline-flex items-center space-x-2">
-              <div className="w-12 h-12 bg-gradient-to-br from-rose-400 to-sage-400 rounded-xl flex items-center justify-center">
-                <Heart className="h-7 w-7 text-white" />
-              </div>
-              <span className="text-2xl font-display font-bold text-gray-900">Elişi Dijital</span>
-            </Link>
-          </div>
-
-          {/* Form Header */}
+            <div className="text-center mb-8">
+              <Link to="/" className="inline-flex items-center space-x-2">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden">
+                  <img src="logo.png" alt="Elişi Dijital Logo" className="h-12 w-12 object-contain" />
+                </div>
+                <span className="text-2xl font-display font-bold text-gray-900">Elişi Dijital</span>
+              </Link>
+            </div>
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
               {isLogin ? 'Hoş Geldiniz' : 'Hesap Oluşturun'}

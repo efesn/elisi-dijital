@@ -11,6 +11,7 @@ import EducationPage from './pages/EducationPage';
 import AuthPage from './pages/AuthPage';
 import ProfilePage from './pages/ProfilePage';
 import SellerRequestPage from './pages/SellerRequestPage';
+import CommunityPage from './pages/CommunityPage';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
             <Route path="/profil" element={<ProfilePage />} />
 
             <Route path="/satici-ol" element={<SellerRequestPage />} />
+            <Route path="/topluluk" element={<CommunityPage />} />
           </Routes>
         </main>
         <Footer />
